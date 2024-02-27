@@ -11,7 +11,7 @@ const app = express();
 const PORT = process.env.PORT;
 
 const corsOptions = {
-  origin: process.env.ORIGIN,
+  origin: process.env.ORIGIN.split(","),
   methods: "POST",
 };
 
