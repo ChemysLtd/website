@@ -4,6 +4,7 @@ import * as shortageApi from "../../../services/shortageService";
 import PrevIcon from "../../../assets/icons/PrevIcon";
 import NextIcon from "../../../assets/icons/NextIcon";
 import arrowRight from "../../../assets/icons/arrow-right.svg";
+import request from "../../../assets/icons/request.svg";
 
 const ShortageList = () => {
   const [shortages, setShortages] = useState([]);
@@ -162,11 +163,11 @@ const ShortageList = () => {
           <table className="w-full border-2 border-slate-800 table-fixed text-center">
             <thead>
               <tr className="border-b-2 border-slate-800">
-                <th className="py-2 px-4">Shortage Name</th>
-                <th className="py-2 px-4">Alternative</th>
-                <th className="py-2 px-4">Form</th>
-                <th className="py-2 px-4">Pack Size</th>
-                <th className="py-2 px-4">Request Medicine</th>
+                <th className="p-2 md:px-4">Shortage Name</th>
+                <th className="p-2 md:px-4">Alternative</th>
+                <th className="p-2 md:px-4">Form</th>
+                <th className="p-0 md:py-2 md:px-4">Pack Size</th>
+                <th className="p-2 md:px-4">Request Medicine</th>
               </tr>
             </thead>
             <tbody>
@@ -175,23 +176,30 @@ const ShortageList = () => {
                   key={shortage._id}
                   className="border-b border-slate-800 odd:bg-slate-200"
                 >
-                  <td className="py-2 px-4">{shortage.name}</td>
-                  <td className="py-2 px-4">{shortage.alternatives}</td>
-                  <td className="py-2 px-4">{shortage.form}</td>
-                  <td className="py-2 px-4">{shortage.packSize}</td>
-                  <td className="py-2 px-4">
+                  <td className="p-2 md:px-4">{shortage.name}</td>
+                  <td className="p-2 md:px-4">{shortage.alternatives}</td>
+                  <td className="p-2 md:px-4">{shortage.form}</td>
+                  <td className="p-0 md:py-2 md:px-4">{shortage.packSize}</td>
+                  <td className="p-2 md:px-4">
                     {/* Request button */}
                     <div className="group">
                       <button
                         onClick={() => handleRequestButtonClick(shortage)}
-                        className="px-4 py-2 border rounded-2xl bg-primary-300 text-white group-hover:bg-tertiary active:bg-secondary"
+                        className=" py-2 border rounded-2xl bg-primary-300 text-white group-hover:bg-tertiary active:bg-secondary md:px-4"
                       >
-                        Request
+                        <span className="hidden md:inline">Request</span>
+                        <span>
+                          <img
+                            src={request}
+                            alt="request"
+                            className="inline w-10 h-6 invert md:hidden"
+                          />
+                        </span>
                         <span>
                           <img
                             src={arrowRight}
                             alt="arrow"
-                            className="inline w-0 h-3 invert align-baseline ease-in-out duration-300 group-hover:w-10"
+                            className="hidden w-0 h-3 invert align-baseline ease-in-out duration-300 group-hover:w-10 md:inline"
                           />
                         </span>
                       </button>
