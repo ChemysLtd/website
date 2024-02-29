@@ -5,6 +5,7 @@ import PrevIcon from "../../../assets/icons/PrevIcon";
 import NextIcon from "../../../assets/icons/NextIcon";
 import arrowRight from "../../../assets/icons/arrow-right.svg";
 import request from "../../../assets/icons/request.svg";
+import expand from "../../../assets/icons/expand.svg";
 
 const ShortageList = () => {
   const [shortages, setShortages] = useState([]);
@@ -13,6 +14,7 @@ const ShortageList = () => {
   const [sortCriteria, setSortCriteria] = useState("name");
   const [sortOrder, setSortOrder] = useState("asc");
   const [search, setSearchTerm] = useState("");
+  const [expandedShortage, setExpandedShortage] = useState(null);
 
   const itemsPerPage = 10;
 
@@ -124,6 +126,14 @@ const ShortageList = () => {
     }, 500); // Adjust the delay as needed
   };
 
+  const handleExpandButton = (shortageData) => {
+    setExpandedShortage(shortageData);
+  };
+
+  const handleClosePopup = () => {
+    setExpandedShortage(null);
+  };
+
   return (
     <div className="w-full h-full flex p-2 md:p-10">
       <div className="flex-1 flex flex-col">
@@ -160,14 +170,19 @@ const ShortageList = () => {
         </div>
 
         <div>
-          <table className="w-full border-2 border-slate-800 table-fixed text-center">
+          <table className="w-full border-2 border-slate-800 table-auto text-center md:table-fixed">
             <thead>
               <tr className="border-b-2 border-slate-800">
                 <th className="p-2 md:px-4">Shortage Name</th>
                 <th className="p-2 md:px-4">Alternative</th>
-                <th className="p-2 md:px-4">Form</th>
-                <th className="p-0 md:py-2 md:px-4">Pack Size</th>
-                <th className="p-2 md:px-4">Request Medicine</th>
+                <th className="md:hidden">Details</th>
+                <th className="p-0 md:py-2 md:px-4 hidden md:table-cell">
+                  Form
+                </th>
+                <th className="p-0 md:py-2 md:px-4 hidden md:table-cell">
+                  Pack Size
+                </th>
+                <th className="py-2 md:px-4">Request Medicine</th>
               </tr>
             </thead>
             <tbody>
@@ -178,14 +193,28 @@ const ShortageList = () => {
                 >
                   <td className="p-2 md:px-4">{shortage.name}</td>
                   <td className="p-2 md:px-4">{shortage.alternatives}</td>
-                  <td className="p-2 md:px-4">{shortage.form}</td>
-                  <td className="p-0 md:py-2 md:px-4">{shortage.packSize}</td>
+                  <td className="md:hidden">
+                    <div className="group">
+                      <button
+                        onClick={() => handleExpandButton(shortage)}
+                        className=" p-1.5 border rounded-2xl bg-primary-200 text-white group-hover:bg-tertiary active:bg-secondary md:px-4"
+                      >
+                        <img src={expand} alt="expand" className="invert" />
+                      </button>
+                    </div>
+                  </td>
+                  <td className="p-0 md:py-2 md:px-4 hidden md:table-cell">
+                    {shortage.form}
+                  </td>
+                  <td className="p-0 md:py-2 md:px-4 hidden md:table-cell">
+                    {shortage.packSize}
+                  </td>
                   <td className="p-2 md:px-4">
                     {/* Request button */}
                     <div className="group">
                       <button
                         onClick={() => handleRequestButtonClick(shortage)}
-                        className=" py-2 border rounded-2xl bg-primary-300 text-white group-hover:bg-tertiary active:bg-secondary md:px-4"
+                        className=" py-2 border rounded-2xl bg-primary-200 text-white group-hover:bg-tertiary active:bg-secondary md:px-4"
                       >
                         <span className="hidden md:inline">Request</span>
                         <span>
@@ -210,6 +239,24 @@ const ShortageList = () => {
             </tbody>
           </table>
         </div>
+
+        {expandedShortage && (
+          <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-4 font-semibold rounded-md shadow-md">
+              <h2 className="text-lg mb-2">Details</h2>
+              <p>Shortage Name: {expandedShortage.name}</p>
+              <p>Alternatives: {expandedShortage.alternatives}</p>
+              <p>Form: {expandedShortage.form}</p>
+              <p>Pack Size: {expandedShortage.packSize}</p>
+              <button
+                onClick={handleClosePopup}
+                className="mt-4 px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="flex justify-center items-center py-2 px-4">
           <div className="flex space-x-4">
